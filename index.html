@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Siamés Patio Edition 🐱🌿</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0b1020;
+  color: white;
+  text-align: center;
+}
+
+#world {
+  height: 320px;
+  margin: 10px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 110px;
+  transition: 0.4s;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+}
+.panel {
+  background: #111827;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🐱 SIAMÉS PATIO SIMULATOR</h2>
+
+<div id="world">🏠</div>
+
+<div class="panel">
+💰 <span id="money">0</span> |
+🍗 <span id="hunger">50</span> |
+⚡ <span id="energy">50</span> |
+😸 <span id="happy">50</span>
+</div>
+
+<div class="panel">
+<button onclick="feed()">🍗 Comer</button>
+<button onclick="work()">💼 Trabajar</button>
+<button onclick="inside()">🏠 Casa</button>
+<button onclick="outside()">🌿 Patio</button>
+<button onclick="eventPatio()">🎲 Evento</button>
+</div>
+
+<p id="msg"></p>
+
+<script>
+
+let money = 0;
+let hunger = 50;
+let energy = 50;
+let happy = 50;
+
+let location = "inside";
+
+const world = document.getElementById("world");
+const msg = document.getElementById("msg");
+
+function update() {
+
+  document.getElementById("money").textContent = money;
+  document.getElementById("hunger").textContent = hunger;
+  document.getElementById("energy").textContent = energy;
+  document.getElementById("happy").textContent = happy;
+
+  if (location === "inside") {
+    world.textContent = "🏠🐱";
+    world.style.background = "#1f2937";
+  } else {
+    world.textContent = "🌿🐱🌞";
+    world.style.background = "linear-gradient(#22c55e, #16a34a)";
+  }
+
+  if (happy < 20 || energy < 20 || hunger < 20) world.textContent = location === "inside" ? "😿🏠" : "😿🌿";
+}
+
+function feed() {
+  hunger += 25;
+  happy += 5;
+  msg.textContent = "🍗 ñam!";
+  update();
+}
+
+function work() {
+  world.textContent = "🏢💼";
+
+  setTimeout(() => {
+    money += Math.random() > 0.5 ? 40 : 20;
+    energy -= 15;
+    hunger -= 10;
+    msg.textContent = "💰 trabajo hecho!";
+    update();
+  }, 1500);
+}
+
+function inside() {
+  location = "inside";
+  happy += 5;
+  msg.textContent = "🏠 vuelta a casa";
+  update();
+}
+
+function outside() {
+  location = "outside";
+  happy += 10;
+  energy -= 5;
+  msg.textContent = "🌿 al patio!";
+  update();
+}
+
+function eventPatio() {
+  if (location !== "outside") {
+    msg.textContent = "⚠️ tienes que estar en el patio!";
+    return;
+  }
+
+  let r = Math.random();
+
+  if (r < 0.3) {
+    happy += 30;
+    msg.textContent = "🐦 cazaste un pajarito imaginario";
+  }
+  else if (r < 0.6) {
+    energy -= 20;
+    msg.textContent = "☀️ demasiado sol";
+  }
+  else {
+    money += 50;
+    msg.textContent = "💰 encontraste un tesoro en el césped";
+  }
+
+  update();
+}
+
+setInterval(() => {
+  hunger -= 2;
+  energy -= 1;
+  happy -= 1;
+  update();
+}, 2000);
+
+update();
+
+</script>
+
+</body>
+  </html>
